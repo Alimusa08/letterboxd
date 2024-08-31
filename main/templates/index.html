@@ -129,9 +129,9 @@
         <h2>Enter the Usernames</h2>
         <form id="comparison-form" action="{% url 'result' %}" method="post">
             {% csrf_token %}
-            <input type="text" name="username1" class="input-box" placeholder="First username" required>
-            <input type="text" name="username2" class="input-box" placeholder="Second username" required>
-            <button type="submit" class="submit-button" onclick="showLoadingScreen()">Submit</button>
+            <input type="text" name="username1" class="input-box" placeholder="your username" required>
+            <input type="text" name="username2" class="input-box" placeholder="your friend's username" required>
+            <button type="submit" class="submit-button" onclick="showLoadingScreen()">Compare</button>
         </form>
     </div>
     

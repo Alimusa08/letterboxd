@@ -9,16 +9,21 @@ def find_movies(username):
     url = f'https://letterboxd.com/{username}/films/'
     page = requests.get(url)
     soup = BeautifulSoup(page.text, 'lxml')
-    ssd = soup.find('div', class_ = 'pagination').find_all('a')
-    ssk = [str(i) for i in ssd]
-    length = int(ssk[-1].split('>')[1].split('<')[0])
+    ssd = []
+    ssk = []
+    length = 0
+    if soup.find('div', class_ = 'pagination'):
+        ssd = soup.find('div', class_ = 'pagination').find_all('a')
+        ssk = [str(i) for i in ssd]
+        length = int(ssk[-1].split('>')[1].split('<')[0])
+        
     table = soup.find('ul', class_ = 'poster-list -p70 -grid film-list clear')
     titles_location = table.find_all('img')
     titles_prep = [str(title).split('''"''') for title in titles_location]
-    titles = []
+    titles = [i[1] for i in titles_prep]
     
     if len(ssd) > 0:
-        for i in range(1, length+1):
+        for i in range(2, length):
             url = f"https://letterboxd.com/{username}/films/page/{i}"
             page = requests.get(url)
             soup = BeautifulSoup(page.text, 'lxml')
@@ -33,16 +38,20 @@ def find_watchlist(username):
     url = f'https://letterboxd.com/{username}/watchlist/'
     page = requests.get(url)
     soup = BeautifulSoup(page.text, 'lxml')
-    url_pages = soup.find('div', class_ = 'pagination').find_all('a')
-    ssk = [str(i) for i in url_pages]
-    length = int(ssk[-1].split('>')[1].split('<')[0])
+    ssd = []
+    ssk = []
+    length = 0
+    if soup.find('div', class_ = 'pagination'):
+        ssd = soup.find('div', class_ = 'pagination').find_all('a')
+        ssk = [str(i) for i in ssd]
+        length = int(ssk[-1].split('>')[1].split('<')[0])
     table = soup.find('ul', class_ = 'poster-list -p125 -grid -scaled128')
     titles_location = table.find_all('img')
     titles_prep = [str(title).split('''"''') for title in titles_location]
-    titles = []
+    titles = [i[1] for i in titles_prep]
     
-    if len(url_pages) > 0:
-            for i in range(1, length+1):
+    if len(ssd) > 0:
+            for i in range(2, length):
                 url = f"https://letterboxd.com/{username}/watchlist/page/{i}"
                 page = requests.get(url)
                 soup = BeautifulSoup(page.text, 'lxml')
@@ -66,8 +75,11 @@ def compare(username1, username2):
     intersection2 = list(set(watchlist1).intersection(watchlist2))
     watchlist_min = min(len(watchlist1), len(watchlist2))
     percentage2 = round((len(intersection2) / watchlist_min )*100)
-    
-    recommendation = random.choice(intersection2)
+    recommendation = ""
+    if intersection2 != []:
+        recommendation = random.choice(intersection2)
+    else:
+        recommendation = random.choice(list(list1))
     
     percentage = percentage1*0.65 + percentage2*0.35
     return percentage, recommendation
