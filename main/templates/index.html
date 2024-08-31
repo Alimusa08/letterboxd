@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Letterboxd Comparison Tool</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+        body {
+            background-color: #1c1c1c;
+            font-family: 'Inter', sans-serif;
+            color: #d9d9d9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .form-container {
+            background-color: #2c2c2c;
+            padding: 20px 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 300px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: #ffffff;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .input-box {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #555;
+            border-radius: 5px;
+            font-size: 16px;
+            background-color: #1c1c1c;
+            color: #d9d9d9;
+            box-sizing: border-box;
+        }
+
+        .input-box::placeholder {
+            color: #888;
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 10px;
+            background-color: #00b894;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .submit-button:hover {
+            background-color: #019d7a;
+        }
+
+        .about-container {
+            max-width: 600px;
+            background-color: #2c2c2c;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .about-container p {
+            color: #d9d9d9;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .about-container a {
+            color: #00b894;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .about-container a:hover {
+            text-decoration: underline;
+        }
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #1c1c1c;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        .spinner {
+            border: 8px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 8px solid #3498db;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .loading-text {
+            margin-top: 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Enter the Usernames</h2>
+        <form id="comparison-form" action="{% url 'result' %}" method="post">
+            {% csrf_token %}
+            <input type="text" name="username1" class="input-box" placeholder="First username" required>
+            <input type="text" name="username2" class="input-box" placeholder="Second username" required>
+            <button type="submit" class="submit-button" onclick="showLoadingScreen()">Submit</button>
+        </form>
+    </div>
+    
+    <div class="about-container">
+        <h2>About this Tool</h2>
+        <p>
+            Welcome to our Letterboxd Comparison Tool, the ultimate platform for movie enthusiasts who want to see how much they align with their friends' film tastes. Simply enter two Letterboxd usernames, and our tool will analyze and compare the movie-watching habits of both users and give you the percentage of movies you both have watched. We'll also recommend a movie you can watch together.
+        </p>
+        <p>
+            This tool is just for fun, so feel free to share it with your friends. For any suggestions, DM me <a href="https://x.com/AliMusa018">HERE</a>.
+        </p>
+    </div>
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="spinner"></div>
+        <p class="loading-text">  This will take about 22 seconds... Thank you for your patience</p>
+    </div>
+    <script>
+        function showLoadingScreen() {
+            document.getElementById('loading-overlay').style.display = 'flex';
+        }
+    </script>
+</body>
+</html>
