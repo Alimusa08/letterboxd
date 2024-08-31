@@ -8,7 +8,7 @@ import requests
 def find_movies(username):
     url = f'https://letterboxd.com/{username}/films/'
     page = requests.get(url)
-    soup = BeautifulSoup(page.text, 'html')
+    soup = BeautifulSoup(page.text, 'lxml')
     ssd = soup.find('div', class_ = 'pagination').find_all('a')
     ssk = [str(i) for i in ssd]
     length = int(ssk[-1].split('>')[1].split('<')[0])
@@ -21,7 +21,7 @@ def find_movies(username):
         for i in range(1, length+1):
             url = f"https://letterboxd.com/{username}/films/page/{i}"
             page = requests.get(url)
-            soup = BeautifulSoup(page.text, 'html')
+            soup = BeautifulSoup(page.text, 'lxml')
             table = soup.find('ul', class_ = 'poster-list -p70 -grid film-list clear')
             titles_location = table.find_all('img')
             titles_prep = [str(title).split('''"''') for title in titles_location]
@@ -32,7 +32,7 @@ def find_movies(username):
 def find_watchlist(username):
     url = f'https://letterboxd.com/{username}/watchlist/'
     page = requests.get(url)
-    soup = BeautifulSoup(page.text, 'html')
+    soup = BeautifulSoup(page.text, 'lxml')
     url_pages = soup.find('div', class_ = 'pagination').find_all('a')
     ssk = [str(i) for i in url_pages]
     length = int(ssk[-1].split('>')[1].split('<')[0])
@@ -45,7 +45,7 @@ def find_watchlist(username):
             for i in range(1, length+1):
                 url = f"https://letterboxd.com/{username}/watchlist/page/{i}"
                 page = requests.get(url)
-                soup = BeautifulSoup(page.text, 'html')
+                soup = BeautifulSoup(page.text, 'lxml')
                 table = soup.find('ul', class_ = 'poster-list -p125 -grid -scaled128')
                 titles_location = table.find_all('img')
                 titles_prep = [str(title).split('''"''') for title in titles_location]
