@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
-
+import dj_database_url
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -80,7 +80,8 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
+#postgresql://letterboxd_database_user:4wNasduhnbJd4bkGCQbtN3OvSwHitaUc@dpg-craka5q3esus73a81mk0-a.oregon-postgres.render.com/letterboxd_database
+DATABASES['default'] = dj_database_url.parse('postgresql://letterboxd_database_user:4wNasduhnbJd4bkGCQbtN3OvSwHitaUc@dpg-craka5q3esus73a81mk0-a/letterboxd_database')
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
