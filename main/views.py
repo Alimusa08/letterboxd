@@ -94,11 +94,7 @@ def result(request):
     try:
         comparation = Compares.objects.get(username1 = username1, username2=username2, percentage=percentage)
     except:
-        comparation = Compares()
-        comparation.username1 = username1
-        comparation.username2 = username2
-        comparation.percentage = percentage
-        comparation.save()
+        Compares.objects.create(username1= username1, username2= username2, percentage= percentage)
     obb = get_object_or_404(Compares, username1=username1, username2=username2)
     return render(request, 'result.html', {'obb': obb,
                                            'recommendation': recommendation})
